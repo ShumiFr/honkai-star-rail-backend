@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://hsr-builder.netlify.app/",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
