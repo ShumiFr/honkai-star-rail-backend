@@ -4,13 +4,16 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import charactersRoutes from "./routes/charactersRoutes.js";
 import lightConesRoutes from "./routes/lightConesRoutes.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: "hsr-builder.netlify.app",
+  origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -19,7 +22,10 @@ app.use(urlencoded({ extended: true }));
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/honkaiStarRail")
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
