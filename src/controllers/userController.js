@@ -269,6 +269,7 @@ export async function saveTeam(req, res) {
           name: character.name,
           icon: character.icon,
           role: character.role,
+          level80: character.level80,
         })),
       };
       console.log("characters", characters);
