@@ -63,6 +63,7 @@ const rolesByPath = {
   "La Chasse": "DPS Principal",
   "La Nihilité": "Soutien",
   "La Préservation": "Support",
+  "Le Souvenir": "Soutien",
 };
 
 const exceptions = {
@@ -71,28 +72,30 @@ const exceptions = {
   Serval: "DPS Secondaire",
   Moze: "DPS Secondaire",
   "Topaz et Compti": "DPS Secondaire",
-  Acheron: "DPS Principal",
+  Achéron: "DPS Principal",
   "Cygne noir": "DPS Secondaire",
   Kafka: "DPS Principal",
   Luka: "DPS Principal",
   Sampo: "DPS Secondaire",
   Welt: "DPS Secondaire",
+  Aglaé: "DPS Principal",
   "March 7th": {
-    Chasse: "DPS Secondaire",
-    Préservation: "Support",
+    "La Chasse": "DPS Secondaire",
+    "La Préservation": "Support",
   },
 };
 
 const getRole = (character) => {
-  const characterName = character.name;
-  const characterPath = character.path.name.get("fr"); // Utilisation correcte de TextAssets
+  const characterName = character.name?.get("fr");
+  const characterPath = character.path.name.get("fr");
+
   if (exceptions[characterName]) {
     if (typeof exceptions[characterName] === "string") {
       return exceptions[characterName];
     }
-    return exceptions[characterName][characterPath] || "Soutien";
+    return exceptions[characterName][characterPath] || "DPS Principal";
   }
-  return rolesByPath[characterPath] || "Soutien";
+  return rolesByPath[characterPath] || "DPS Principal";
 };
 
 export const getCharacters = async (req, res) => {
@@ -108,7 +111,10 @@ export const getCharacters = async (req, res) => {
 
       return {
         id: character.id,
-        name: character.name?.get("fr") || "Nom indisponible",
+        name:
+          character.name?.get("fr") === "{NICKNAME}"
+            ? "Pionnier"
+            : character.name?.get("fr") || "Nom indisponible",
         description:
           character.description?.get("fr") || "Description indisponible",
         shopItemIcon: character.shopItemIcon?.url || "",
@@ -165,7 +171,10 @@ export const getCharacterById = async (req, res) => {
 
     const simplifiedCharacter = {
       id: character.id,
-      name: character.name?.get("fr") || "Nom indisponible",
+      name:
+        character.name?.get("fr") === "{NICKNAME}"
+          ? "Pionnier"
+          : character.name?.get("fr") || "Nom indisponible",
       description:
         character.description?.get("fr") || "Description indisponible",
       shopItemIcon: character.shopItemIcon?.url || "",
